@@ -383,52 +383,52 @@ def process_files(config):
 
         # For challenge sets, assume that we have a gem_parent_id and construct
         # the corresponding test subset.
-        for dataset in data.datasets:
-            # Only works if we have references.
-            if ref_data[dataset] is not None:
-                # And if the references have the parent_id set.
-                if ref_data[dataset].has_parent_ids:
-                    if dataset not in get_all_transformation_sets():
-                        logger.info(
-                            "Found parent ID in %s but no corresponding parent dataset"
-                            % dataset
-                        )
-                        continue
-                    parent_dataset_name = get_parent_dataset_for_transformation(dataset)
-                    new_dataset_name = f"{dataset}_parent"
-                    logger.info("Adding new subset dataset %s" % new_dataset_name)
-                    # Construct new references.
-                    new_refs = copy(ref_data[parent_dataset_name])
-                    new_refs.assign_ids_and_unscramble(ref_data[dataset].parent_ids)
-                    ref_data[new_dataset_name] = new_refs
-                    # Construct new predictions.
-                    new_preds = copy(data.predictions_for(parent_dataset_name))
-                    new_preds.assign_ids_and_unscramble(ref_data[dataset].parent_ids)
-                    data.entries[new_dataset_name] = new_preds
-                    logger.info("Dataset successfully added.")
-
-        # Next construct the contrast sets. The files define a list of IDs we can
-        # match on.
-        for dataset in data.datasets:
-            if dataset in get_all_subpopulation_sets():
-                # Assemble dictionary of all the subsets.
-                contrast_sets = load_subpopulation_dataset(dataset)
-                for set_name, subsets in contrast_sets.items():
-                    for subset_name, id_list in subsets.items():
-                        new_dataset_name = (
-                            f"{dataset}_contrast_{set_name}-{subset_name}"
-                        )
-                        logger.info("Adding new contrast dataset %s" % new_dataset_name)
-                        # Optionally, construct new references.
-                        if ref_data[dataset] is not None:
-                            new_refs = copy(ref_data[dataset])
-                            new_refs.assign_ids_and_unscramble(id_list)
-                            ref_data[new_dataset_name] = new_refs
-                        # Construct new predictions.
-                        new_preds = copy(data.predictions_for(dataset))
-                        new_preds.assign_ids_and_unscramble(id_list)
-                        data.entries[new_dataset_name] = new_preds
-                        logger.info("Dataset successfully added.")
+        # for dataset in data.datasets:
+        #     # Only works if we have references.
+        #     if ref_data[dataset] is not None:
+        #         # And if the references have the parent_id set.
+        #         if ref_data[dataset].has_parent_ids:
+        #             if dataset not in get_all_transformation_sets():
+        #                 logger.info(
+        #                     "Found parent ID in %s but no corresponding parent dataset"
+        #                     % dataset
+        #                 )
+        #                 continue
+        #             parent_dataset_name = get_parent_dataset_for_transformation(dataset)
+        #             new_dataset_name = f"{dataset}_parent"
+        #             logger.info("Adding new subset dataset %s" % new_dataset_name)
+        #             # Construct new references.
+        #             new_refs = copy(ref_data[parent_dataset_name])
+        #             new_refs.assign_ids_and_unscramble(ref_data[dataset].parent_ids)
+        #             ref_data[new_dataset_name] = new_refs
+        #             # Construct new predictions.
+        #             new_preds = copy(data.predictions_for(parent_dataset_name))
+        #             new_preds.assign_ids_and_unscramble(ref_data[dataset].parent_ids)
+        #             data.entries[new_dataset_name] = new_preds
+        #             logger.info("Dataset successfully added.")
+        #
+        # # Next construct the contrast sets. The files define a list of IDs we can
+        # # match on.
+        # for dataset in data.datasets:
+        #     if dataset in get_all_subpopulation_sets():
+        #         # Assemble dictionary of all the subsets.
+        #         contrast_sets = load_subpopulation_dataset(dataset)
+        #         for set_name, subsets in contrast_sets.items():
+        #             for subset_name, id_list in subsets.items():
+        #                 new_dataset_name = (
+        #                     f"{dataset}_contrast_{set_name}-{subset_name}"
+        #                 )
+        #                 logger.info("Adding new contrast dataset %s" % new_dataset_name)
+        #                 # Optionally, construct new references.
+        #                 if ref_data[dataset] is not None:
+        #                     new_refs = copy(ref_data[dataset])
+        #                     new_refs.assign_ids_and_unscramble(id_list)
+        #                     ref_data[new_dataset_name] = new_refs
+        #                 # Construct new predictions.
+        #                 new_preds = copy(data.predictions_for(dataset))
+        #                 new_preds.assign_ids_and_unscramble(id_list)
+        #                 data.entries[new_dataset_name] = new_preds
+        #                 logger.info("Dataset successfully added.")
         # Compute all the values.
         values = process_submission(
             outs=data,
@@ -511,16 +511,16 @@ def main():
         nargs="+",
         default=[
             "bleu",
-            "rouge",
-            "chrf",
-            "nist",
-            "msttr",
-            "ngrams",
-            "sari",
-            "ter",
-            "ttr",
-            "yules_i",
-            "local_recall",
+            # "rouge",
+            # "chrf",
+            # "nist",
+            # "msttr",
+            # "ngrams",
+            # "sari",
+            # "ter",
+            # "ttr",
+            # "yules_i",
+            # "local_recall",
         ],
         help=(
             "Full metric list default is [bleu, meteor, rouge, nist, msttr, ngram, sari, ter, ttr, yules_i, local_recall]. "
